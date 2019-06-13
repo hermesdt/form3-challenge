@@ -7,6 +7,7 @@ import (
 
 	"github.com/hermesdt/form3-challenge/db"
 
+	"github.com/go-chi/chi"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -19,9 +20,11 @@ type TestSuite struct {
 
 func (suite *TestSuite) SetupSuite() {
 	suite.db = db.Connect()
-	mux := http.NewServeMux()
-	mux.Handle("/payments", Index(suite.db))
-	testServer := httptest.NewServer(mux)
+
+	router := chi.NewRouter()
+	SetupRoutes(suite.db, router)
+
+	testServer := httptest.NewServer(router)
 	suite.server = testServer
 	suite.client = testServer.Client()
 }

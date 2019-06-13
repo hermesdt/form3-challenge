@@ -2,7 +2,6 @@ package db
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 	"time"
@@ -29,7 +28,6 @@ func (db *Database) Close() error {
 
 func Connect() *Database {
 	ctx, _ := context.WithTimeout(context.Background(), 4*time.Second)
-	fmt.Println("mongourl", os.Getenv("MONGO_URL"))
 	clientOpts := options.Client().ApplyURI(os.Getenv("MONGO_URL"))
 	client, err := mongo.Connect(ctx, clientOpts)
 	if err != nil {

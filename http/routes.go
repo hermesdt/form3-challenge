@@ -17,10 +17,7 @@ func SetupRoutes(db db.DBHolder) http.Handler {
 	router.Use(middleware.Logger)
 	router.Use(middleware.Recoverer)
 
-	router.Route("/payments", func(r chi.Router) {
-		r.Get("/", payments.Index(db))
-	})
+	payments.SetupRoutes(db, router)
 
-	// router.GET("/payments", Index)
 	return router
 }
