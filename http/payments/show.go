@@ -1,12 +1,12 @@
 package payments
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"github.com/go-chi/chi"
 
 	"github.com/hermesdt/form3-challenge/db"
+	"github.com/hermesdt/form3-challenge/http/helpers"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
@@ -18,10 +18,10 @@ func Show(db db.DBHolder) http.HandlerFunc {
 			return
 		}
 
-		w.WriteHeader(200)
-		json.NewEncoder(w).Encode(map[string]interface{}{
+		data := map[string]interface{}{
 			"payment": payment,
-		})
+		}
+		helpers.WriteJSON(w, data, 200)
 	}
 }
 
