@@ -7,14 +7,14 @@ import (
 
 	"github.com/hermesdt/form3-challenge/db"
 	"github.com/hermesdt/form3-challenge/http/helpers"
-	"go.mongodb.org/mongo-driver/bson"
+	"github.com/hermesdt/form3-challenge/http/payloads"
 )
 
 func Show(db db.DBHolder) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		payment, err := getPayment(db, chi.URLParam(r, "id"))
 		if err != nil {
-			http.Error(w, err.Error(), 400)
+			helpers.WriteErrorJSON(w, err, 500)
 			return
 		}
 
@@ -25,17 +25,20 @@ func Show(db db.DBHolder) http.HandlerFunc {
 	}
 }
 
-func getPayment(db db.DBHolder, id string) (interface{}, error) {
+func getPayment(db db.DBHolder, id string) (*payloads.Payment, error) {
 	filter := map[string]interface{}{
 		"id": id,
 	}
 	singleResult := db.GetDB().Collection("payments").FindOne(nil, filter)
+	if singleResult.Err() != nil {
+		return nil, singleResult.Err()
+	}
 
-	var result bson.M
-	err := singleResult.Decode(&result)
+	var payment payloads.Payment
+	err := singleResult.Decode(&payment)
 	if err != nil {
 		return nil, err
 	}
 
-	return result, nil
+	return &payment, nil
 }
