@@ -10,8 +10,10 @@ import (
 func SetupRoutes(db db.DBHolder, router chi.Router) http.Handler {
 	router.Get("/", Index(db))
 	router.Get("/{id}", Show(db))
+
 	router.Post("/", Create(db))
 	router.Delete("/{id}", Delete(db))
+	router.Put("/{id}", Update(db))
 
 	return router
 }
