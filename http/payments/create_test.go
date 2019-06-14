@@ -9,7 +9,7 @@ import (
 
 func (suite *TestSuite) TestCreate() {
 	bs, err := json.Marshal(map[string]interface{}{
-		"id": "1001",
+		"organisation_id": "1001",
 	})
 	suite.Require().NoError(err)
 
@@ -29,11 +29,10 @@ func (suite *TestSuite) TestCreate() {
 	suite.Require().Equal(res.StatusCode, 200)
 
 	var payload struct {
-		Payment struct {
-			ID string
-		}
+		Payment payloads.Payment `json:"payment"`
 	}
 
 	json.NewDecoder(res.Body).Decode(&payload)
 	suite.Require().Equal(data.ID, payload.Payment.ID)
+	suite.Require().Equal("1001", payload.Payment.OrganisationID)
 }
