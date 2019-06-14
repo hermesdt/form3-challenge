@@ -2,6 +2,14 @@
 
 This projects is a simple CRUD implementation of a server responsible for receiving payments from different banks.
 
+### Endpoints
+
+GET /v1/payments - List payments
+GET /v1/payments/some-id - Show a specific payment
+POST /v1/payments - Create a new payment
+PUT /v1/payments/some-id - Updates a specific payment
+DELETE /v1/payments/some-id - Deletes a specific payment
+
 ## Requisites
 
 As the project uses mongodb as database you can start it with:
