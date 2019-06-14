@@ -19,7 +19,7 @@ func (suite *TestSuite) TestDelete() {
 	req, _ := http.NewRequest("DELETE", suite.server.URL+"/payments/"+id, nil)
 	res, err := suite.client.Do(req)
 	suite.Require().NoError(err)
-	suite.Require().Equal(200, res.StatusCode)
+	suite.Require().Equal(http.StatusOK, res.StatusCode)
 
 	defer res.Body.Close()
 

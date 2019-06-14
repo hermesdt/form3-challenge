@@ -3,6 +3,7 @@ package payments
 import (
 	"bytes"
 	"encoding/json"
+	"net/http"
 
 	"github.com/hermesdt/form3-challenge/http/payloads"
 )
@@ -26,7 +27,7 @@ func (suite *TestSuite) TestCreate() {
 	suite.Require().NoError(err)
 	defer res.Body.Close()
 
-	suite.Require().Equal(res.StatusCode, 200)
+	suite.Require().Equal(http.StatusOK, res.StatusCode)
 
 	var payload struct {
 		Payment payloads.Payment `json:"payment"`

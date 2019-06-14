@@ -1,7 +1,6 @@
 package payments
 
 import (
-	"errors"
 	"net/http"
 
 	"github.com/go-chi/chi"
@@ -16,16 +15,16 @@ func Delete(db db.DBHolder) http.HandlerFunc {
 		filter := map[string]interface{}{"id": id}
 		result, err := db.GetDB().Collection("payments").DeleteOne(nil, filter)
 		if err != nil {
-			helpers.WriteErrorJSON(w, err, 500)
+			helpers.WriteErrorJSON(w, err, http.StatusInternalServerError)
 			return
 		}
 
 		if result.DeletedCount != 1 {
-			helpers.WriteErrorJSON(w, errors.New("document not found"), 500)
+			helpers.WriteNotFoundErrorJSON(w)
 			return
 		}
 
 		data := map[string]interface{}{}
-		helpers.WriteJSON(w, data, 200)
+		helpers.WriteJSON(w, data, http.StatusOK)
 	}
 }

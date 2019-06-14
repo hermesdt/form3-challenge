@@ -21,13 +21,13 @@ func Create(db db.DBHolder) http.HandlerFunc {
 
 		_, err := db.GetDB().Collection("payments").InsertOne(nil, payment)
 		if err != nil {
-			helpers.WriteErrorJSON(w, err, 500)
+			helpers.WriteErrorJSON(w, err, http.StatusInternalServerError)
 			return
 		}
 
 		helpers.WriteJSON(w, &payloads.IDResponse{
 			ID: payment.ID,
-		}, 201)
+		}, http.StatusCreated)
 	}
 }
 

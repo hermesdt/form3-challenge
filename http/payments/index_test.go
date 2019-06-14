@@ -2,6 +2,7 @@ package payments
 
 import (
 	"encoding/json"
+	"net/http"
 )
 
 func (suite *TestSuite) TestList() {
@@ -16,7 +17,7 @@ func (suite *TestSuite) TestList() {
 	suite.Require().NoError(err)
 	defer res.Body.Close()
 
-	suite.Require().Equal(res.StatusCode, 200)
+	suite.Require().Equal(http.StatusOK, res.StatusCode)
 
 	message := make(map[string][]interface{})
 	json.NewDecoder(res.Body).Decode(&message)

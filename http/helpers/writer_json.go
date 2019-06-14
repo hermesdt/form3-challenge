@@ -15,11 +15,15 @@ func WriteJSON(w http.ResponseWriter, data interface{}, status int) {
 	json.NewEncoder(w).Encode(data)
 }
 
+var documentNotFound = payloads.ErrorResponse{Error: "document not found"}
+
+func WriteNotFoundErrorJSON(w http.ResponseWriter) {
+	WriteJSON(w, documentNotFound, 404)
+}
+
 func WriteErrorJSON(w http.ResponseWriter, err error, status int) {
 	if err == mongo.ErrNoDocuments {
-		WriteJSON(w, payloads.ErrorResponse{
-			Error: "document not found",
-		}, 404)
+		WriteNotFoundErrorJSON(w)
 		return
 	}
 

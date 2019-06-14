@@ -12,14 +12,14 @@ func Index(db db.DBHolder) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		payments, err := getAllPayments(db)
 		if err != nil {
-			http.Error(w, err.Error(), 400)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
 		data := map[string]interface{}{
 			"payments": payments,
 		}
-		helpers.WriteJSON(w, data, 200)
+		helpers.WriteJSON(w, data, http.StatusOK)
 	}
 }
 

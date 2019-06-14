@@ -14,14 +14,14 @@ func Show(db db.DBHolder) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		payment, err := getPayment(db, chi.URLParam(r, "id"))
 		if err != nil {
-			helpers.WriteErrorJSON(w, err, 500)
+			helpers.WriteErrorJSON(w, err, http.StatusInternalServerError)
 			return
 		}
 
 		data := map[string]interface{}{
 			"payment": payment,
 		}
-		helpers.WriteJSON(w, data, 200)
+		helpers.WriteJSON(w, data, http.StatusOK)
 	}
 }
 
