@@ -13,8 +13,6 @@ import (
 
 func Create(db db.DBHolder) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		defer r.Body.Close()
-
 		var payment payloads.Payment
 		json.NewDecoder(r.Body).Decode(&payment)
 		payment.ID = uuid.NewV4().String()

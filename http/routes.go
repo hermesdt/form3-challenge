@@ -6,7 +6,8 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/hermesdt/form3-challenge/db"
-	"github.com/hermesdt/form3-challenge/http/payments"
+	paymentsV1 "github.com/hermesdt/form3-challenge/http/v1/payments"
+	paymentsV2 "github.com/hermesdt/form3-challenge/http/v2/payments"
 )
 
 func SetupRoutes(db db.DBHolder) http.Handler {
@@ -17,8 +18,12 @@ func SetupRoutes(db db.DBHolder) http.Handler {
 	router.Use(middleware.Logger)
 	router.Use(middleware.Recoverer)
 
-	router.Route("/payments", func(r chi.Router) {
-		payments.SetupRoutes(db, r)
+	router.Route("/v1/payments", func(r chi.Router) {
+		paymentsV1.SetupRoutes(db, r)
+	})
+
+	router.Route("/v2/payments", func(r chi.Router) {
+		paymentsV2.SetupRoutes(db, r)
 	})
 
 	return router
