@@ -31,15 +31,16 @@ func Connect() *Database {
 	clientOpts := options.Client().ApplyURI(os.Getenv("MONGO_URL"))
 	client, err := mongo.Connect(ctx, clientOpts)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("error creating connection to mongodb server: ", err)
 	}
 
 	ctx, _ = context.WithTimeout(context.Background(), 2*time.Second)
 	err = client.Ping(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("error connecting to mongodb server: ", err)
 	}
 
+	log.Println("connected to mongo at", clientOpts.Hosts)
 	return &Database{
 		mongoDB: client.Database(os.Getenv("MONGO_DBNAME")),
 	}
