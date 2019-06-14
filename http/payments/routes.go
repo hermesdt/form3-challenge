@@ -7,11 +7,10 @@ import (
 	"github.com/hermesdt/form3-challenge/db"
 )
 
-func SetupRoutes(db db.DBHolder, router *chi.Mux) http.Handler {
-	router.Route("/payments", func(r chi.Router) {
-		r.Get("/", Index(db))
-		r.Get("/{id}", Show(db))
-	})
+func SetupRoutes(db db.DBHolder, router chi.Router) http.Handler {
+	router.Get("/", Index(db))
+	router.Get("/{id}", Show(db))
+	router.Post("/", Create(db))
 
 	return router
 }

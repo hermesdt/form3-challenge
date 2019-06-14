@@ -22,7 +22,9 @@ func (suite *TestSuite) SetupSuite() {
 	suite.db = db.Connect()
 
 	router := chi.NewRouter()
-	SetupRoutes(suite.db, router)
+	router.Route("/payments", func(r chi.Router) {
+		SetupRoutes(suite.db, r)
+	})
 
 	testServer := httptest.NewServer(router)
 	suite.server = testServer

@@ -17,7 +17,9 @@ func SetupRoutes(db db.DBHolder) http.Handler {
 	router.Use(middleware.Logger)
 	router.Use(middleware.Recoverer)
 
-	payments.SetupRoutes(db, router)
+	router.Route("/payments", func(r chi.Router) {
+		payments.SetupRoutes(db, r)
+	})
 
 	return router
 }
